@@ -27,10 +27,11 @@ create table
     created_at timestamp with time zone not null default now(),
     name text not null,
     team bigint null,
-    position bigint null,
+    position text null,
     depth_chart_order int null,
     sleeper_search_rank bigint null,
     sleeper_id bigint null,
+    rotowire_id bigint null,
     constraint players_pkey primary key (id),
     constraint players_team_fkey foreign key (team) references teams (id)
   ) tablespace pg_default;
