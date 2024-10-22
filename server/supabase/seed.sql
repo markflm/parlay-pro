@@ -36,6 +36,3 @@ values ('Cincinatti Bengals', 1, 'AFC North', 'CIN', 'bengals.png'),
 ('Los Angeles Rams', 1, 'NFC West', 'LAR', 'rams.png'),
 ('San Francisco 49ers', 1, 'NFC West', 'SF', 'niners.png'),
 ('Seattle Seahawks', 1, 'NFC West', 'SEA', 'seahawks.png');
-
-insert into games (season_year, name, team_one, team_two, intraseason_indicator)
-VALUES (2024, 'BAL @ TB Week 7', 2, 28, 'Week 7')
