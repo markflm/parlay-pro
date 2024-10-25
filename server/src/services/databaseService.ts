@@ -1,5 +1,6 @@
 import { dbClient } from "../utils/supaclient";
 import {PlayerStatLogNfl, PlayerStatLogResponse} from "../../../shared/types/nfl/PlayerStatLog"
+import { GetUpcomingGamesByLeagueResponse, UpcomingGame } from "../../../shared/types/GetGames"
 
 
 
@@ -15,4 +16,21 @@ export const getPlayersStatsByGameId = async (gameId: number): Promise<PlayerSta
     }
 
 return response;
+}
+
+export const getUpcomingGamesByLeagueIdAndSeason = async (leagueId: number, seasonYear: number): Promise<UpcomingGame[]> => {
+
+    //some piece to get the criteria to determine what the upcoming games for a league are. hardcode for now 
+    const { data: upcomingGames, error } = await dbClient.rpc('getupcominggamesbyleagueid', {
+        league_id_param: leagueId,
+        season_year_param: seasonYear
+    })
+
+    if (error){
+        console.log("supabase error")
+        throw new Error(error.message)
+    }
+
+    return upcomingGames.map((x: any) => {return {gameId: x.game_id, gameName: x.game_name, upcomingIdentifier: x.upcoming_identifier, playedAt: x.played_at}})
+
 }
