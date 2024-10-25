@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node src/index.ts",
-    "dev:watch": "nodemon src/index.ts",
+    "dev:watch": "nodemon --transpileOnly src/index.ts",
     "build": "tsc -p tsconfig.json",
     "start": "node build/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -14,11 +14,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@supabase/supabase-js": "^2.45.6",
+    "dotenv": "^16.4.5",
     "fastify": "^5.0.0"
   },
   "devDependencies": {
     "@types/node": "^22.7.7",
     "nodemon": "^3.1.7",
+    "supabase": "^1.207.9",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.3"
   }
