@@ -1,15 +1,16 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
 import Fastify, { FastifyRequest } from 'fastify'
+import cors from '@fastify/cors'
 import { loghello } from "./services/test"
 import { getPlayersStatsByGameId, getUpcomingGamesByLeagueIdAndSeason } from './services/databaseService';
 import { GetUpcomingGamesQueryParams } from './types/FastifyHelpers';
 
 
 const fastify = Fastify({
-  logger: true
+  exposeHeadRoutes: true,
+  logger: true,
 })
-
 fastify.get('/', async (request, reply) => {
   return 'Hello there! 👋';
 })
