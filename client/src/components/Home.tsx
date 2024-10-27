@@ -1,19 +1,45 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
-import { getUpcomingGamesForLeague } from '../services/dbService';
-import { Button } from './ui/button';
-import React from 'react';
+import {
+    getPlayerStatsForGame,
+    getUpcomingGamesForLeague,
+} from '../services/dbService'
+import { Button } from './ui/button'
+import React from 'react'
 
 export default function Home() {
-    console.log("home render")
-    const [activeLeague, setActiveLeague] = useState();
+    console.log('home render')
+    const [activeLeague, setActiveLeague] = useState()
+    const [selectedGameId, setSelectedGameId] = useState()
 
-    // const { data: activeLeagueGameList, isLoading: activeLeagueGameListLoading } = useQuery(
-    //     ['active_games_for_league'],
-    // //    async () => getUpcomingGamesForLeague(1, 2024),
-    //    async () => await getUpcomingGamesForLeague(1, 2024),
-    //     { staleTime: Infinity }
-    // )
+    const {
+        data: activeLeagueGameList,
+        isLoading: activeLeagueGameListLoading,
+    } = useQuery(
+        ['active_games_for_league'],
+        async () => await getUpcomingGamesForLeague(1, 2024),
+        { staleTime: Infinity }
+    )
+    const {
+        data: selectedGamePlayerStats,
+        isLoading: selectedGamePlayerStatsIsLoading,
+    } = useQuery(
+        ['selected_game_player_stats', selectedGameId],
+        async () => {
+            if (!selectedGameId) return undefined
+            return await getPlayerStatsForGame(selectedGameId)
+        },
+        { staleTime: Infinity }
+    )
 
-    return (<div className='w-screen h-screen flex flex-col'><div className="m-auto"><Button>shad btn</Button></div></div>)
+    useEffect(() => {}, [selectedGameId])
+
+    console.log(activeLeagueGameList)
+    return (
+        <div className="w-screen h-screen flex flex-col">
+            <div className="m-auto">
+                <select>select league</select>
+            </div>
+        </div>
+    )
 }
