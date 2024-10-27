@@ -1,45 +1,55 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, createContext } from 'react'
 import { useQuery } from 'react-query'
-import {
-    getPlayerStatsForGame,
-    getUpcomingGamesForLeague,
-} from '../services/dbService'
+import { getPlayerStatsForGame } from '../services/dbService'
 import { Button } from './ui/button'
 import React from 'react'
+import GameSelector from './GameSelector'
+import {
+    ActiveGamePerLeague,
+    ActiveGamePerLeagueContext,
+} from '@/types/Contexts'
+
+export const LeagueGameContext = createContext<ActiveGamePerLeagueContext>({
+    activeGamePerLeagueObj: { leagueId: 1, activeGameId: undefined },
+    update: () => {},
+})
 
 export default function Home() {
     console.log('home render')
-    const [activeLeague, setActiveLeague] = useState()
-    const [selectedGameId, setSelectedGameId] = useState()
 
-    const {
-        data: activeLeagueGameList,
-        isLoading: activeLeagueGameListLoading,
-    } = useQuery(
-        ['active_games_for_league'],
-        async () => await getUpcomingGamesForLeague(1, 2024),
-        { staleTime: Infinity }
-    )
-    const {
-        data: selectedGamePlayerStats,
-        isLoading: selectedGamePlayerStatsIsLoading,
-    } = useQuery(
-        ['selected_game_player_stats', selectedGameId],
-        async () => {
-            if (!selectedGameId) return undefined
-            return await getPlayerStatsForGame(selectedGameId)
-        },
-        { staleTime: Infinity }
-    )
+    const [activeGameInLeague, setActiveGameInLeague] = useState<
+        ActiveGamePerLeague[]
+    >([{ leagueId: 1, activeGameId: undefined }])
 
-    useEffect(() => {}, [selectedGameId])
+    function handleActiveGameChanged(leagueId: number, newGameId: number) {
+        console.log('handle active game changed')
+        const localAgl = [...activeGameInLeague]
+        const aglIndex = activeGameInLeague.findIndex(
+            (x) => x.leagueId === leagueId
+        )
 
-    console.log(activeLeagueGameList)
+        if (aglIndex === -1) {
+            localAgl.push({ leagueId, activeGameId: newGameId })
+        }
+        localAgl[aglIndex] = { leagueId, activeGameId: newGameId }
+        setActiveGameInLeague(localAgl)
+    }
+
     return (
-        <div className="w-screen h-screen flex flex-col">
-            <div className="m-auto">
-                <select>select league</select>
-            </div>
+        <div className="dark w-full h-screen flex flex-col">
+            <LeagueGameContext.Provider
+                value={{
+                    // @ts-ignore
+                    activeGamePerLeagueObj: activeGameInLeague.find(
+                        (x) => x.leagueId === 1
+                    ),
+                    update: handleActiveGameChanged,
+                }}
+            >
+                <div className="mx-auto max-w-[80%] ">
+                    <GameSelector></GameSelector>
+                </div>
+            </LeagueGameContext.Provider>
         </div>
     )
 }
