@@ -15,5 +15,5 @@ export default function Home() {
     //     { staleTime: Infinity }
     // )
 
-    return (<Button className='text-red-600'>BUTTOddN</Button>)
+    return (<div className='w-screen h-screen flex flex-col'><div className="m-auto"><Button>shad btn</Button></div></div>)
 }
