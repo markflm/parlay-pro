@@ -31,18 +31,16 @@ export default function GameSelector(props) {
         { staleTime: Infinity }
     )
     useEffect(() => {
-        console.log('eu')
         if (!activeLeagueGameList || !screenWidth) return
-        const sectionCount = getNumberOfCarouselSections(
+        const cardsPerSection = getNumberOfCarouselSections(
             screenWidth,
-            GameCardWidthPx,
-            activeLeagueGameList.length
+            GameCardWidthPx
         )
-        console.log('SECTION count')
-        console.log(sectionCount)
         const sections = []
-        for (let i = 0; i < activeLeagueGameList.length; i += sectionCount) {
-            sections.push(activeLeagueGameList.slice(i, i + (sectionCount - 1)))
+        for (let i = 0; i < activeLeagueGameList.length; i += cardsPerSection) {
+            sections.push(
+                activeLeagueGameList.slice(i, i + (cardsPerSection - 1))
+            )
         }
         setCarouselSections(sections)
     }, [activeLeagueGameList?.length, screenWidth])
@@ -55,24 +53,20 @@ export default function GameSelector(props) {
         })
     }, [api])
 
-    // function to determine how many game to show per carousel section
-
-    console.log(carouselSections)
     return (
-        <Carousel className="" opts={{}} setApi={setApi}>
+        <Carousel className="" opts={{ align: 'start' }} setApi={setApi}>
             <CarouselContent className="">
-                {activeLeagueGameList?.map((agl) => (
-                    <CarouselItem>
-                        <GameCard
-                            gameId={agl.gameId}
-                            gameName={agl.gameName}
-                            playedAt={agl.playedAt}
-                        ></GameCard>
+                {carouselSections?.map((section) => (
+                    <CarouselItem className="flex justify-between">
+                        {section.map((agl) => (
+                            <GameCard
+                                gameId={agl.gameId}
+                                gameName={agl.gameName}
+                                playedAt={agl.playedAt}
+                            ></GameCard>
+                        ))}
                     </CarouselItem>
                 ))}
-
-                {/* <CarouselItem>...</CarouselItem>
-                <CarouselItem>...</CarouselItem> */}
             </CarouselContent>
             <CarouselPrevious />
             <CarouselNext />

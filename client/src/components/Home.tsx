@@ -15,8 +15,6 @@ export const LeagueGameContext = createContext<ActiveGamePerLeagueContext>({
 })
 
 export default function Home() {
-    console.log('home render')
-
     const [activeGameInLeague, setActiveGameInLeague] = useState<
         ActiveGamePerLeague[]
     >([{ leagueId: 1, activeGameId: undefined }])
@@ -34,7 +32,6 @@ export default function Home() {
         localAgl[aglIndex] = { leagueId, activeGameId: newGameId }
         setActiveGameInLeague(localAgl)
     }
-
     return (
         <div className="dark w-full h-screen flex flex-col">
             <LeagueGameContext.Provider
