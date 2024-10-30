@@ -12,7 +12,7 @@ export const getUpcomingGamesForLeague = async (
     return response
 }
 
-export const getPlayerStatsForGame = async (gameId: string) => {
+export const getPlayerStatsForGame = async (gameId: number) => {
     const response = (await axios.get(`/statsforgame/${gameId}`)).data
     return response
 }

@@ -5,7 +5,6 @@ import { GetUpcomingGamesByLeagueResponse, UpcomingGame } from "../../../shared/
 
 
 export const getPlayersStatsByGameId = async (gameId: number): Promise<PlayerStatLogResponse> => {
-
     const { data: stats, error } = await dbClient.rpc('getplayerstatsforgamenfl', {
         game_id_param: gameId
     })

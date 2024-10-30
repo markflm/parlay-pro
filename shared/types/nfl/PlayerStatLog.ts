@@ -1,7 +1,5 @@
-export type PlayerStatLogNfl = {
-    player_id: number,
-    player_name: string,
-    position: string,
+
+export type PlayerStatLogNflGame = {
     team_name: string,
     game_name: string,
     game_id: number,
@@ -19,9 +17,15 @@ export type PlayerStatLogNfl = {
     receiving_td: number,
 }
 
+export type PlayerStatLogNfl = {
+    player_id: number,
+    player_name: string,
+    position: string,
+    gamelog: PlayerStatLogNflGame[]
+}
 
 export type PlayerStatLogResponse = {
-    gameId: number,
+    gameId: number, //the id of the upcoming game, the one you're looking back from
     gameName: string,
     //maybe other stuff like game date
     playerStats: PlayerStatLogNfl[]

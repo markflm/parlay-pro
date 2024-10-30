@@ -8,6 +8,7 @@ import {
     ActiveGamePerLeague,
     ActiveGamePerLeagueContext,
 } from '@/types/Contexts'
+import PlayerStatsSection from './PlayerStatsSection'
 
 export const LeagueGameContext = createContext<ActiveGamePerLeagueContext>({
     activeGamePerLeagueObj: { leagueId: 1, activeGameId: undefined },
@@ -43,8 +44,11 @@ export default function Home() {
                     update: handleActiveGameChanged,
                 }}
             >
-                <div className="mx-auto max-w-[80%] ">
-                    <GameSelector></GameSelector>
+                <div className="mx-auto w-full flex flex-col">
+                    <div className="mx-auto max-w-[80%]">
+                        <GameSelector></GameSelector>
+                    </div>
+                    <PlayerStatsSection></PlayerStatsSection>
                 </div>
             </LeagueGameContext.Provider>
         </div>
