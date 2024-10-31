@@ -48,7 +48,7 @@ export default function Home() {
                     <div className="mx-auto max-w-[80%]">
                         <GameSelector></GameSelector>
                     </div>
-                    <PlayerStatsSection></PlayerStatsSection>
+                    <PlayerStatsSection leagueId={1}></PlayerStatsSection>
                 </div>
             </LeagueGameContext.Provider>
         </div>

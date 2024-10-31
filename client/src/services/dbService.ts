@@ -1,5 +1,6 @@
 import axios from '../utils/axios'
 import { UpcomingGame } from '../../../shared/types/nfl'
+import { PlayerStatLogResponse } from '../../../shared/types/nfl/PlayerStatLog'
 
 export const getUpcomingGamesForLeague = async (
     leagueId: number,
@@ -12,7 +13,9 @@ export const getUpcomingGamesForLeague = async (
     return response
 }
 
-export const getPlayerStatsForGame = async (gameId: number) => {
+export const getPlayerStatsForGame = async (
+    gameId: number
+): Promise<PlayerStatLogResponse> => {
     const response = (await axios.get(`/statsforgame/${gameId}`)).data
     return response
 }

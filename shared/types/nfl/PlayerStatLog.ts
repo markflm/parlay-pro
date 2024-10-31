@@ -3,6 +3,7 @@ export type PlayerStatLogNflGame = {
     team_name: string,
     game_name: string,
     game_id: number,
+    game_isi: string,
     passing_comp: number
     passing_att: number,
     passing_yds: number,

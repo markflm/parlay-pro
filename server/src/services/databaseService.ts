@@ -16,19 +16,19 @@ export const getPlayersStatsByGameId = async (gameId: number): Promise<PlayerSta
 
         const playerStat: PlayerStatLogNfl = { player_id: stat.player_id, player_name: stat.player_name, position: stat.player_position, gamelog: [] }
 
-        playerStat.gamelog.push(...[stats.filter((x: any) => x.player_id === stat.player_id).map((n: PlayerStatLogNflGame) => {
+        playerStat.gamelog = stats.filter((x: any) => x.player_id === stat.player_id).map((n: PlayerStatLogNflGame) => {
             return {
-                team_name: n.team_name, game_name: n.game_name, game_id: n.game_id, passing_comp: n.passing_comp,
+                team_name: n.team_name, game_name: n.game_name, game_id: n.game_id, game_isi: n.game_isi, passing_comp: n.passing_comp,
                 passing_att: n.passing_att, passing_yds: n.passing_yds, passing_td: n.passing_td, passing_int: n.passing_int,
                 rushing_att: n.rushing_att, rushing_yds: n.rushing_yds, rushing_td: n.rushing_td, receiving_rec: n.receiving_rec, receiving_yds: n.receiving_yds,
                 receiving_tgt: n.receiving_tgt, receiving_td: n.receiving_td
             }
-        })])
+        })
 
 
         response.playerStats.push(playerStat)
     }
-
+console.log(response)
     return response;
 }
 

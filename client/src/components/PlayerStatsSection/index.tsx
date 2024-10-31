@@ -2,8 +2,11 @@ import { useContext } from 'react'
 import { LeagueGameContext } from '../Home'
 import { useQuery } from 'react-query'
 import { getPlayerStatsForGame } from '@/services/dbService'
+import RoleStatsTable from './RoleStatsTable'
 
-export default function PlayerStatsSection() {
+export default function PlayerStatsSection(props) {
+    const roles = ['QB', 'WR', 'RB', 'TE']
+    const { leagueId } = props
     const {
         activeGamePerLeagueObj: { activeGameId },
     } = useContext(LeagueGameContext)
@@ -16,7 +19,18 @@ export default function PlayerStatsSection() {
             },
             { staleTime: Infinity }
         )
-    console.log('player game stats data')
+    console.log('gameplayerstats')
     console.log(gamePlayerStats)
-    return <>player stats section</>
+    return (
+        leagueId == 1 &&
+        gamePlayerStats &&
+        roles.map((r) => (
+            <RoleStatsTable
+                role={r}
+                logs={gamePlayerStats?.playerStats.filter(
+                    (gps) => gps.position === r
+                )}
+            ></RoleStatsTable>
+        ))
+    )
 }
