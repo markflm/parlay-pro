@@ -26,7 +26,6 @@ export type PlayerStatLogNfl = {
 
 export type PlayerStatLogResponse = {
     gameId: number, //the id of the upcoming game, the one you're looking back from
-    gameName: string,
     //maybe other stuff like game date
     playerStats: PlayerStatLogNfl[]
 }

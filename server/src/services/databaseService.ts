@@ -1,5 +1,5 @@
 import { dbClient } from "../utils/supaclient";
-import {PlayerStatLogNfl, PlayerStatLogResponse} from "../../../shared/types/nfl/PlayerStatLog"
+import {PlayerStatLogNfl, PlayerStatLogNflGame, PlayerStatLogResponse} from "../../../shared/types/nfl/PlayerStatLog"
 import { GetUpcomingGamesByLeagueResponse, UpcomingGame } from "../../../shared/types/GetGames"
 
 
@@ -8,13 +8,28 @@ export const getPlayersStatsByGameId = async (gameId: number): Promise<PlayerSta
     const { data: stats, error } = await dbClient.rpc('getplayerstatsforgamenfl', {
         game_id_param: gameId
     })
-    const response: PlayerStatLogResponse = {gameId: stats[0].game_id, gameName: stats[0].game_name, playerStats: []}
-    for (let i = 0; i < stats.length; i ++){
-//TODO - remove shared values like game name / game id from response
-        response.playerStats.push(stats[i])
+
+    const response: PlayerStatLogResponse = { gameId, playerStats: [] }
+    for (let i = 0; i < stats.length; i++) {
+        const stat = stats[i]
+        if (response.playerStats.find((x) => x.player_id === stat.player_id)) continue; //if player's already in playerstats, we've already added all their games to playerstats[player].gamelog. crude solution but w/e
+
+        const playerStat: PlayerStatLogNfl = { player_id: stat.player_id, player_name: stat.player_name, position: stat.player_position, gamelog: [] }
+
+        playerStat.gamelog.push(...[stats.filter((x: any) => x.player_id === stat.player_id).map((n: PlayerStatLogNflGame) => {
+            return {
+                team_name: n.team_name, game_name: n.game_name, game_id: n.game_id, passing_comp: n.passing_comp,
+                passing_att: n.passing_att, passing_yds: n.passing_yds, passing_td: n.passing_td, passing_int: n.passing_int,
+                rushing_att: n.rushing_att, rushing_yds: n.rushing_yds, rushing_td: n.rushing_td, receiving_rec: n.receiving_rec, receiving_yds: n.receiving_yds,
+                receiving_tgt: n.receiving_tgt, receiving_td: n.receiving_td
+            }
+        })])
+
+
+        response.playerStats.push(playerStat)
     }
 
-return response;
+    return response;
 }
 
 export const getUpcomingGamesByLeagueIdAndSeason = async (leagueId: number, seasonYear: number): Promise<UpcomingGame[]> => {
