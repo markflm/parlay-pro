@@ -14,8 +14,8 @@ export const getUpcomingGamesForLeague = async (
 }
 
 export const getPlayerStatsForGame = async (
-    gameId: number
+    gamePublicId: string
 ): Promise<PlayerStatLogResponse> => {
-    const response = (await axios.get(`/statsforgame/${gameId}`)).data
+    const response = (await axios.get(`/statsforgame/${gamePublicId}`)).data
     return response
 }

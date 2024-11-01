@@ -60,7 +60,7 @@ export default function GameSelector(props) {
                     <CarouselItem className="flex justify-between">
                         {section.map((agl) => (
                             <GameCard
-                                gameId={agl.gameId}
+                                gamePublicId={agl.gamePublicId}
                                 gameName={agl.gameName}
                                 playedAt={agl.playedAt}
                             ></GameCard>

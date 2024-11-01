@@ -1,6 +1,5 @@
 import { useEffect, useState, createContext } from 'react'
 import { useQuery } from 'react-query'
-import { getPlayerStatsForGame } from '../services/dbService'
 import { Button } from './ui/button'
 import React from 'react'
 import GameSelector from './GameSelector'

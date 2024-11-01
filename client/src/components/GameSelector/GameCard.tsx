@@ -3,16 +3,16 @@ import { LeagueGameContext } from '../Home'
 import { Card, CardDescription, CardHeader, CardTitle } from '../ui/card'
 import { GameCardWidthPx } from '@/constants'
 // @ts-ignore
-export default function GameCard({ gameId, gameName, playedAt }) {
+export default function GameCard({ gamePublicId, gameName, playedAt }) {
     const { activeGamePerLeagueObj, update } = useContext(LeagueGameContext)
     const [selected, setSelected] = useState(false)
 
     useEffect(() => {
-        setSelected(activeGamePerLeagueObj.activeGameId === gameId)
+        setSelected(activeGamePerLeagueObj.activeGameId === gamePublicId)
         return
     }, [activeGamePerLeagueObj.activeGameId])
     function handleCardClick() {
-        update(activeGamePerLeagueObj.leagueId, gameId)
+        update(activeGamePerLeagueObj.leagueId, gamePublicId)
     }
 
     return (

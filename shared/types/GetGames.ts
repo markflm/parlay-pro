@@ -6,7 +6,7 @@ filterOveride?: any //server will have criteria that determines which games are 
 }
 
 export type UpcomingGame = {
-    gameId: number,
+    gamePublicId: number,
     gameName: string,
     upcomingIdentifier: string,
     playedAt: Date

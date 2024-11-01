@@ -15,10 +15,9 @@ fastify.get('/', async (request, reply) => {
   return 'Hello there! 👋';
 })
 
-fastify.get<{ Params: { gameid: string } }>("/statsforgame/:gameid", async (request, reply) => {
+fastify.get<{ Params: { gamePublicId: string } }>("/statsforgame/:gamePublicId", async (request, reply) => {
   try {
-    const gameId = parseInt(request.params.gameid)
-    return await getPlayersStatsByGameId(gameId);
+    return await getPlayersStatsByGameId(request.params.gamePublicId);
   }
   catch (err) {
     fastify.log.error(`Error getting stats for specific gameId ${err}`)

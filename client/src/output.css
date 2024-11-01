@@ -706,6 +706,10 @@ body {
   height: 2.75rem;
 }
 
+.h-12 {
+  height: 3rem;
+}
+
 .h-4 {
   height: 1rem;
 }
@@ -722,10 +726,6 @@ body {
   height: 100vh;
 }
 
-.h-12 {
-  height: 3rem;
-}
-
 .w-10 {
   width: 2.5rem;
 }
@@ -738,12 +738,12 @@ body {
   width: 2rem;
 }
 
-.w-full {
-  width: 100%;
-}
-
 .w-\[100px\] {
   width: 100px;
+}
+
+.w-full {
+  width: 100%;
 }
 
 .min-w-0 {
@@ -867,6 +867,10 @@ body {
   background-color: hsl(var(--destructive));
 }
 
+.bg-muted\/50 {
+  background-color: hsl(var(--muted) / 0.5);
+}
+
 .bg-primary {
   background-color: hsl(var(--primary));
 }
@@ -880,16 +884,12 @@ body {
   background-color: hsl(var(--secondary));
 }
 
-.bg-muted\/50 {
-  background-color: hsl(var(--muted) / 0.5);
+.p-4 {
+  padding: 1rem;
 }
 
 .p-6 {
   padding: 1.5rem;
-}
-
-.p-4 {
-  padding: 1rem;
 }
 
 .px-3 {
@@ -926,10 +926,6 @@ body {
 
 .text-left {
   text-align: left;
-}
-
-.text-right {
-  text-align: right;
 }
 
 .align-middle {
@@ -1036,16 +1032,16 @@ body {
   background-color: hsl(var(--destructive) / 0.9);
 }
 
+.hover\:bg-muted\/50:hover {
+  background-color: hsl(var(--muted) / 0.5);
+}
+
 .hover\:bg-primary\/90:hover {
   background-color: hsl(var(--primary) / 0.9);
 }
 
 .hover\:bg-secondary\/80:hover {
   background-color: hsl(var(--secondary) / 0.8);
-}
-
-.hover\:bg-muted\/50:hover {
-  background-color: hsl(var(--muted) / 0.5);
 }
 
 .hover\:text-accent-foreground:hover {

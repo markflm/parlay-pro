@@ -1,6 +1,6 @@
 export type ActiveGamePerLeague = {
     leagueId: number
-    activeGameId: number | undefined
+    activeGameId: string | undefined //todo - rename to publicId
 }
 
 export type ActiveGamePerLeagueContext = {
