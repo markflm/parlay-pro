@@ -19,8 +19,6 @@ export default function PlayerStatsSection(props) {
             },
             { staleTime: Infinity }
         )
-    console.log('gameplayerstats')
-    console.log(gamePlayerStats)
     return (
         leagueId == 1 &&
         gamePlayerStats &&

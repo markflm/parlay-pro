@@ -6,3 +6,22 @@ create or replace function getUpcomingGamesByLeagueId(league_id_param int, seaso
     where t.league = league_id_param AND g.season_year = season_year_param;
     end;
 $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION getintraseasonindicatorsforplayedgames(league_id_param INT, season_year_param INT) RETURNS TABLE(game_isi text, played_at timestamp) AS $$
+BEGIN
+  RETURN query
+  SELECT   g.intraseason_indicator AS game_isi,
+           min(played_at)          AS played_at
+  FROM     games g
+  join     teams t
+  ON       g.team_one = t.id
+  join     nfl_gamelog gl
+  ON       gl.game = g.id
+  WHERE    g.played_at <= now()::timestamp
+  AND      t.league = leage_id_param
+  AND      g.season_year = season_year_param
+  GROUP BY g.intraseason_indicator
+  ORDER BY min(played_at);
+
+END;
+$$ LANGUAGE PLPGSQL;
