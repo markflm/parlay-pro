@@ -52,7 +52,7 @@ export default function RoleStatsTable(props: RoleStatsTableProps) {
                 {logs.map((gl) => (
                     <>
                         <TableHeader>
-                            <TableRow className="w-[9999px]">
+                            <TableRow className="">
                                 <TableHead className="text-lg">
                                     V {gl.player_name}
                                 </TableHead>
