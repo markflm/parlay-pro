@@ -679,6 +679,11 @@ body {
   margin-bottom: 1.25rem;
 }
 
+.my-auto {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
 .-ml-4 {
   margin-left: -1rem;
 }
@@ -731,10 +736,6 @@ body {
   height: 100vh;
 }
 
-.w-1 {
-  width: 0.25rem;
-}
-
 .w-10 {
   width: 2.5rem;
 }
@@ -755,36 +756,16 @@ body {
   width: 100%;
 }
 
-.w-\[1px\] {
-  width: 1px;
+.w-\[900px\] {
+  width: 900px;
 }
 
-.w-\[150px\] {
-  width: 150px;
+.w-\[225px\] {
+  width: 225px;
 }
 
-.w-\[175px\] {
-  width: 175px;
-}
-
-.w-screen {
-  width: 100vw;
-}
-
-.w-96 {
-  width: 24rem;
-}
-
-.w-\[9000px\] {
-  width: 9000px;
-}
-
-.w-1\/2 {
-  width: 50%;
-}
-
-.w-3\/4 {
-  width: 75%;
+.w-\[125px\] {
+  width: 125px;
 }
 
 .min-w-0 {
@@ -793,26 +774,6 @@ body {
 
 .max-w-\[80\%\] {
   max-width: 80%;
-}
-
-.max-w-\[1px\] {
-  max-width: 1px;
-}
-
-.max-w-\[175px\] {
-  max-width: 175px;
-}
-
-.max-w-\[600px\] {
-  max-width: 600px;
-}
-
-.max-w-\[60000px\] {
-  max-width: 60000px;
-}
-
-.max-w-\[150px\] {
-  max-width: 150px;
 }
 
 .flex-1 {
@@ -868,10 +829,6 @@ body {
 
 .justify-between {
   justify-content: space-between;
-}
-
-.justify-around {
-  justify-content: space-around;
 }
 
 .gap-2 {
@@ -947,6 +904,11 @@ body {
 .bg-red-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(239 68 68 / var(--tw-bg-opacity));
+}
+
+.bg-red-800 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(153 27 27 / var(--tw-bg-opacity));
 }
 
 .bg-secondary {

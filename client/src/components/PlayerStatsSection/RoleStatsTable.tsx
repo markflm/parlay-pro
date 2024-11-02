@@ -22,7 +22,7 @@ import {
     CollapsibleContent,
     CollapsibleTrigger,
 } from '../ui/collapsible'
-import { largeColumnWidthPx } from '@/constants'
+import { largeColumnWidthPx, medColumnWidthPx } from '@/constants'
 
 export type RoleStatsTableProps = {
     logs: PlayerStatLogNfl[]
@@ -61,14 +61,25 @@ export default function RoleStatsTable(props: RoleStatsTableProps) {
             <Table className="w-full">
                 <TableCaption>END {role} TABLE </TableCaption>
                 {logs.map((gl) => (
-                    <>
-                        <TableHeader>
-                            <TableRow className="">
-                                <TableHead className="text-lg">
-                                    V {gl.player_name}
+                    <Collapsible className="bg-red-800" open>
+                        <TableHeader className="flex w-full">
+                            <TableRow className="flex flex-1 justify-between">
+                                <TableHead
+                                    className={`text-lg w-[${largeColumnWidthPx}px] flex`}
+                                >
+                                    <div className="my-auto">
+                                        {gl.player_name}
+                                    </div>
                                 </TableHead>
                                 {(scheduleMap as ScheduleMap[]).map((sm) => (
-                                    <TableHead>{sm.indicator}</TableHead>
+                                    <TableHead
+                                        className={`flex w-[${medColumnWidthPx}px]`}
+                                    >
+                                        <div className="my-auto">
+                                            {' '}
+                                            {sm.indicator}
+                                        </div>
+                                    </TableHead>
                                 ))}
                             </TableRow>
 
@@ -77,11 +88,13 @@ export default function RoleStatsTable(props: RoleStatsTableProps) {
                     <TableHead>Method</TableHead>
                     <TableHead className="">Amount</TableHead> */}
                         </TableHeader>
-                        <TableBody className="w-1">
+                        <TableBody className="flex flex-col w-full">
                             {Object.keys(sortedFilteredDbToTableMap).map(
                                 (map) => (
-                                    <TableRow>
-                                        <TableCell>
+                                    <TableRow className="flex flex-1 justify-between">
+                                        <TableCell
+                                            className={`w-[${largeColumnWidthPx}px] flex`}
+                                        >
                                             {
                                                 sortedFilteredDbToTableMap[map]
                                                     .label
@@ -89,7 +102,9 @@ export default function RoleStatsTable(props: RoleStatsTableProps) {
                                         </TableCell>
                                         {(scheduleMap as ScheduleMap[]).map(
                                             (sm) => (
-                                                <TableCell>
+                                                <TableCell
+                                                    className={`flex w-[${medColumnWidthPx}px]`}
+                                                >
                                                     {gl.gamelog.find(
                                                         (x) =>
                                                             x.game_isi ==
@@ -108,7 +123,7 @@ export default function RoleStatsTable(props: RoleStatsTableProps) {
                                 )
                             )}
                         </TableBody>
-                    </>
+                    </Collapsible>
                 ))}
             </Table>
         </div>
