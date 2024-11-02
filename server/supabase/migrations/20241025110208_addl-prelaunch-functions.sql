@@ -11,17 +11,17 @@ CREATE OR REPLACE FUNCTION getintraseasonindicatorsforplayedgames(league_id_para
 BEGIN
   RETURN query
   SELECT   g.intraseason_indicator AS game_isi,
-           min(played_at)          AS played_at
+           min(g.played_at)          AS played_at_time
   FROM     games g
   join     teams t
   ON       g.team_one = t.id
   join     nfl_gamelog gl
   ON       gl.game = g.id
   WHERE    g.played_at <= now()::timestamp
-  AND      t.league = leage_id_param
+  AND      t.league = league_id_param
   AND      g.season_year = season_year_param
   GROUP BY g.intraseason_indicator
-  ORDER BY min(played_at);
+  ORDER BY min(g.played_at);
 
 END;
 $$ LANGUAGE PLPGSQL;

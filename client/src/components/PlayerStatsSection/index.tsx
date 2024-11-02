@@ -19,6 +19,7 @@ export default function PlayerStatsSection(props) {
             },
             { staleTime: Infinity }
         )
+
     return (
         leagueId == 1 &&
         gamePlayerStats &&
@@ -28,6 +29,7 @@ export default function PlayerStatsSection(props) {
                 logs={gamePlayerStats?.playerStats.filter(
                     (gps) => gps.position === r
                 )}
+                leagueId={leagueId}
             ></RoleStatsTable>
         ))
     )

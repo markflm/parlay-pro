@@ -3,8 +3,8 @@ dotenv.config();
 import Fastify, { FastifyRequest } from 'fastify'
 import cors from '@fastify/cors'
 import { loghello } from "./services/test"
-import { getPlayersStatsByGameId, getUpcomingGamesByLeagueIdAndSeason } from './services/databaseService';
-import { GetUpcomingGamesQueryParams } from './types/FastifyHelpers';
+import { getIntraseasonIndicatorForPlayedGamesByLeagueIdAndSeason, getPlayersStatsByGameId, getUpcomingGamesByLeagueIdAndSeason } from './services/databaseService';
+import { GetUpcomingGamesQueryParams, LeagueSeasonQueryParams } from './types/FastifyHelpers';
 
 
 const fastify = Fastify({
@@ -36,11 +36,35 @@ fastify.get("/upcominggames", {
       required: ['leagueid', 'season']
     }
   }
-}, async (request: FastifyRequest<{ Querystring: GetUpcomingGamesQueryParams }>, reply) => {
+}, async (request: FastifyRequest<{ Querystring: LeagueSeasonQueryParams }>, reply) => {
   try {
     const { leagueid, season } = request.query;
     //todo - further query param validation required? or does fastify schema take care of it
     return getUpcomingGamesByLeagueIdAndSeason(leagueid, season)
+  }
+  catch (err) {
+    fastify.log.error(`Error getting upcoming games for leagueId: ${err}`)
+    throw err;
+  }
+})
+
+fastify.get("/schedulemap", {
+  schema: {
+    querystring: {
+      type: 'object',
+      properties: {
+        leagueid: { type: 'integer', minimum: 1 },
+        season: { type: 'integer', minimum: 2024 }
+      },
+      required: ['leagueid', 'season']
+    }
+  }
+}, async (request: FastifyRequest<{ Querystring: LeagueSeasonQueryParams }>, reply) => {
+  try {
+    const { leagueid, season } = request.query;
+    console.log("schedule map hit")
+    //todo - further query param validation required? or does fastify schema take care of it
+    return getIntraseasonIndicatorForPlayedGamesByLeagueIdAndSeason(leagueid, season)
   }
   catch (err) {
     fastify.log.error(`Error getting upcoming games for leagueId: ${err}`)

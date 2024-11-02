@@ -1,4 +1,4 @@
-import { getUpcomingGamesForLeague } from '@/services/dbService'
+import { getScheduleMap, getUpcomingGamesForLeague } from '@/services/dbService'
 import { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { useWindowSize } from '@uidotdev/usehooks'
@@ -26,10 +26,22 @@ export default function GameSelector(props) {
         data: activeLeagueGameList,
         isLoading: activeLeagueGameListLoading,
     } = useQuery(
-        ['active_games_for_league'],
+        ['active_games_for_league_', 1],
         async () => await getUpcomingGamesForLeague(1, 2024),
         { staleTime: Infinity }
     )
+    //TODO - not the best way to present a chronological schedule for all sports
+    const {
+        data: scheduleMap,
+        isLoading: scheduleMapIsLoading,
+        isFetched: scheduleMapIsFetched,
+    } = useQuery(
+        ['schedule_map_for_league_', 1],
+        async () => await getScheduleMap(1, 2024), //should arrive sorted
+        { staleTime: Infinity }
+    )
+    console.log('schedule map')
+    console.log(scheduleMap)
     useEffect(() => {
         if (!activeLeagueGameList || !screenWidth) return
         const cardsPerSection = getNumberOfCarouselSections(
@@ -54,22 +66,24 @@ export default function GameSelector(props) {
     }, [api])
 
     return (
-        <Carousel className="" opts={{ align: 'start' }} setApi={setApi}>
-            <CarouselContent className="">
-                {carouselSections?.map((section) => (
-                    <CarouselItem className="flex justify-between">
-                        {section.map((agl) => (
-                            <GameCard
-                                gamePublicId={agl.gamePublicId}
-                                gameName={agl.gameName}
-                                playedAt={agl.playedAt}
-                            ></GameCard>
-                        ))}
-                    </CarouselItem>
-                ))}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-        </Carousel>
+        scheduleMapIsFetched && (
+            <Carousel className="" opts={{ align: 'start' }} setApi={setApi}>
+                <CarouselContent className="">
+                    {carouselSections?.map((section) => (
+                        <CarouselItem className="flex justify-between">
+                            {section.map((agl) => (
+                                <GameCard
+                                    gamePublicId={agl.gamePublicId}
+                                    gameName={agl.gameName}
+                                    playedAt={agl.playedAt}
+                                ></GameCard>
+                            ))}
+                        </CarouselItem>
+                    ))}
+                </CarouselContent>
+                <CarouselPrevious />
+                <CarouselNext />
+            </Carousel>
+        )
     )
 }

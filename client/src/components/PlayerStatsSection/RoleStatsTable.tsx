@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 import {
     PlayerStatLogNfl,
     PlayerStatLogNflGame,
 } from '../../../../shared/types/nfl/PlayerStatLog'
+import { ScheduleMap } from '../../../shared/types/GetGames'
 import {
     Table,
     TableBody,
@@ -13,52 +14,91 @@ import {
     TableHeader,
     TableRow,
 } from '../ui/table'
+import { useQuery } from 'react-query'
+import { Label } from '../ui/label'
+import { DBToTableMapNfl } from '../../../../shared/types/nfl/StatTable'
+import { Collapsible, CollapsibleContent } from '../ui/collapsible'
+
 export type RoleStatsTableProps = {
     logs: PlayerStatLogNfl[]
     role: string
+    leagueId: number
 }
 export default function RoleStatsTable(props: RoleStatsTableProps) {
-    const { logs, role } = props
+    const { logs, role, leagueId } = props
 
     console.log('role stats table')
     console.log(logs)
 
-    useEffect(() => {
-        console.log('logs sort ue')
-        logs.sort((a, b) => b.gamelog.length - a.gamelog.length)
-    }, [logs])
+    const sortedFilteredDbToTableMap: any = useMemo(() => {
+        if (leagueId != 1) return DBToTableMapNfl
+        const filteredMap = {}
+        for (const key of Object.keys(DBToTableMapNfl)) {
+            if (DBToTableMapNfl[key].roles.includes(role)) {
+                // @ts-ignore
+                filteredMap[key] = DBToTableMapNfl[key]
+            }
+        }
+        return filteredMap
+    }, [])
 
-    // const longestGamelogIndex = useMemo(() => {
-    //     console.log("usememo fired")
-    //     longestGamelogIndex = logs.sort((a, b) => a.gamelog.length - b.gamelog.length)
-
-    // }, [logs])
+    const { data: scheduleMap } = useQuery(['schedule_map_for_league_', 1])
 
     return (
-        <div className="my-5">
-            <Table>
+        <div className="my-5  mx-3">
+            <Label className="text-2xl">{role}</Label>
+            <Table className="">
                 <TableCaption>END {role} TABLE </TableCaption>
+                {logs.map((gl) => (
+                    <>
+                        <TableHeader>
+                            <TableRow className="w-[9999px]">
+                                <TableHead className="text-lg">
+                                    V {gl.player_name}
+                                </TableHead>
+                                {(scheduleMap as ScheduleMap[]).map((sm) => (
+                                    <TableHead>{sm.indicator}</TableHead>
+                                ))}
+                            </TableRow>
 
-                <TableHeader>
-                    <TableRow>
-                        <TableHead>Player Name</TableHead>
-                        {logs[0].gamelog.map((gl) => (
-                            <TableHead className="left">
-                                {gl.game_isi}
-                            </TableHead>
-                        ))}
-                        {/* <TableHead className="w-[100px]">Invoice</TableHead>
+                            {/* <TableHead className="w-[100px]">Invoice</TableHead>
                     <TableHead>Status</TableHead>
                     <TableHead>Method</TableHead>
                     <TableHead className="">Amount</TableHead> */}
-                    </TableRow>
-                </TableHeader>
-                {/* <TableBody>
-                    {logs.map((glr) => (
-                        
-                        <TableCell></TableCell>
-                    ))}
-                </TableBody> */}
+                        </TableHeader>
+                        <TableBody className="w-1">
+                            {Object.keys(sortedFilteredDbToTableMap).map(
+                                (map) => (
+                                    <TableRow>
+                                        <TableCell>
+                                            {
+                                                sortedFilteredDbToTableMap[map]
+                                                    .label
+                                            }
+                                        </TableCell>
+                                        {(scheduleMap as ScheduleMap[]).map(
+                                            (sm) => (
+                                                <TableCell>
+                                                    {gl.gamelog.find(
+                                                        (x) =>
+                                                            x.game_isi ==
+                                                            sm.indicator
+                                                    ) &&
+                                                        // @ts-ignore
+                                                        gl.gamelog.find(
+                                                            (x) =>
+                                                                x.game_isi ==
+                                                                sm.indicator
+                                                        )[map]}
+                                                </TableCell>
+                                            )
+                                        )}
+                                    </TableRow>
+                                )
+                            )}
+                        </TableBody>
+                    </>
+                ))}
             </Table>
         </div>
     )

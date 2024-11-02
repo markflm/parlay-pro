@@ -1,6 +1,6 @@
 import { dbClient } from "../utils/supaclient";
 import {PlayerStatLogNfl, PlayerStatLogNflGame, PlayerStatLogResponse} from "../../../shared/types/nfl/PlayerStatLog"
-import { GetUpcomingGamesByLeagueResponse, UpcomingGame } from "../../../shared/types/GetGames"
+import { GetUpcomingGamesByLeagueResponse, ScheduleMap, UpcomingGame } from "../../../shared/types/GetGames"
 
 
 
@@ -43,6 +43,18 @@ export const getUpcomingGamesByLeagueIdAndSeason = async (leagueId: number, seas
         throw new Error(error.message)
     }
 
-    return upcomingGames.filter((x:any ) => x.upcoming_identifier === 'Week 8').map((x: any) => {return {gamePublicId: x.game_public_id, gameName: x.game_name, upcomingIdentifier: x.upcoming_identifier, playedAt: x.played_at}})
+    return upcomingGames.filter((x: any ) => x.upcoming_identifier === 'Week 8').map((x: any) => {return {gamePublicId: x.game_public_id, gameName: x.game_name, upcomingIdentifier: x.upcoming_identifier, playedAt: x.played_at}})
 
+}
+
+export const getIntraseasonIndicatorForPlayedGamesByLeagueIdAndSeason = async(leagueId: number, seasonYear: number): Promise<ScheduleMap[]> => {
+    const { data: indicators, error } = await dbClient.rpc('getintraseasonindicatorsforplayedgames', {
+        league_id_param: leagueId,
+        season_year_param: seasonYear
+    })
+    console.log("ISI ERROR")
+    console.log(error)
+    console.log("ISI DATA")
+    console.log(indicators)
+    return indicators.map((x:any) => {return { indicator: x.game_isi, playedAt: x.played_at }})
 }

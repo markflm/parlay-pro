@@ -15,3 +15,9 @@ export type UpcomingGame = {
 export type GetUpcomingGamesByLeagueResponse = {
 upcomingGames: UpcomingGame[];
 }
+
+
+export type ScheduleMap = {
+indicator: string,
+playedAt: Date
+}
