@@ -17,7 +17,12 @@ import {
 import { useQuery } from 'react-query'
 import { Label } from '../ui/label'
 import { DBToTableMapNfl } from '../../../../shared/types/nfl/StatTable'
-import { Collapsible, CollapsibleContent } from '../ui/collapsible'
+import {
+    Collapsible,
+    CollapsibleContent,
+    CollapsibleTrigger,
+} from '../ui/collapsible'
+import { largeColumnWidthPx } from '@/constants'
 
 export type RoleStatsTableProps = {
     logs: PlayerStatLogNfl[]
@@ -26,6 +31,7 @@ export type RoleStatsTableProps = {
 }
 export default function RoleStatsTable(props: RoleStatsTableProps) {
     const { logs, role, leagueId } = props
+    const [closedPlayerIds, setClosedPlayerIds] = useState<string[]>([])
 
     console.log('role stats table')
     console.log(logs)
@@ -42,12 +48,17 @@ export default function RoleStatsTable(props: RoleStatsTableProps) {
         return filteredMap
     }, [])
 
+    function handleCollapseChange() {
+        const localClosedPlayers = [...closedPlayerIds]
+        // const playerIndex = localClosedPlayers.findIndex((x) => x === )
+    }
+
     const { data: scheduleMap } = useQuery(['schedule_map_for_league_', 1])
 
     return (
-        <div className="my-5  mx-3">
+        <div className="my-5 mx-3">
             <Label className="text-2xl">{role}</Label>
-            <Table className="">
+            <Table className="w-full">
                 <TableCaption>END {role} TABLE </TableCaption>
                 {logs.map((gl) => (
                     <>
